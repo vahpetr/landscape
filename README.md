@@ -1,29 +1,42 @@
 # Landscape
-IT landscape description tool based on excalidraw
+IT landscape description tool based on Excalidraw
 
-#### Container launch 
+## Container launch
 
-    docker compose up --build landscape
+Use docker compose to build and run the UI. The application will be
+available on [http://localhost:5000](http://localhost:5000/).
 
-#### Local launch
+```bash
+docker compose up --build landscape
+```
 
-Set for Windows
+## Local launch
 
-    Set-ExecutionPolicy -ExecutionPolicy RemoteSigned
+### Windows preparation
 
-Install packages 
+```powershell
+Set-ExecutionPolicy -ExecutionPolicy RemoteSigned
+```
 
-    npm install
+### Install packages
 
-Create .env.local file 
+```bash
+npm install
+```
 
-    REACT_APP_PROTO_JSON_HOST="https://openapi.acme.dev/"
-    REACT_APP_PROTO_JSON_PATH="spec/json/protos.json"
-    REACT_APP_GITHUB_API_PRJ_URL="https://api.github.com/repos/XXXXXXXXX/diagramm_store/"
-    REACT_APP_GITLAB_API_PRJ_URL="https://gitlab.acme.dev/api/v4/projects/NNNN/" 
-    REACT_APP_GITHUB_TOKEN="gjngjng"  
-    REACT_APP_GITLAB_TOKEN="jdjdjdd"
+### Create `.env.local`
 
-And launch
+```bash
+REACT_APP_PROTO_JSON_HOST=""
+REACT_APP_PROTO_JSON_PATH=""
+REACT_APP_GITHUB_API_PRJ_URL=""
+REACT_APP_GITLAB_API_PRJ_URL="https://gitlab.acme.dev/api/v4/projects/NNNN/"
+REACT_APP_GITHUB_TOKEN=""
+REACT_APP_GITLAB_TOKEN=""
+```
 
-    npm start NODE_ENV=local
+### Start application
+
+```bash
+npm start NODE_ENV=local
+```

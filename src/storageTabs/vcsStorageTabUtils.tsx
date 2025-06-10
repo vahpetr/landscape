@@ -25,6 +25,25 @@ export function parseDiagramFiles(treeJson: any[]) {
     .filter(entry => entry.type == "blob");
 }
 
+export const apiUrlToWebUrl = (apiUrl: string): string => {
+  if (!apiUrl) return "";
+  if (apiUrl.includes("api.github.com/repos")) {
+    return apiUrl
+      .replace("api.github.com/repos", "github.com")
+      .replace(/\/+$/, "");
+  }
+  const gitlabMatch = apiUrl.match(/(https?:\/\/[^/]+)\/api\/v4\/projects\/(.+)/);
+  if (gitlabMatch) {
+    const host = gitlabMatch[1];
+    const project = gitlabMatch[2].replace(/\/+$/, "");
+    if (/^\d+$/.test(project)) {
+      return `${host}/projects/${project}`;
+    }
+    return `${host}/${decodeURIComponent(project)}`;
+  }
+  return apiUrl;
+}
+
 export type FileEntry = { path: string, sha: string }
 export type upgrateDiagramParams = {
   getFilesUrl: (apiSourceURL: string, branch: string) => string,
@@ -516,11 +535,17 @@ export const commitDiagram = async (
 
 export const diagramActionMenu = (
   diagrammMoreMenuAnchorEl: () => { key: string, el: null | HTMLElement },
-  handleDiagramMoreMenuClose: () => void) => {
+  handleDiagramMoreMenuClose: () => void,
+  apiSourceURL: string,
+  branch: string
+) => {
 
   const handleDiagramMoreMenuItemClick = () => {
-    navigator.clipboard.writeText(
-      "https://gitlab.infra.rtkit.dev/mvp/product-diagramm/diagramm-repository/-/blob/lartech/" + diagrammMoreMenuAnchorEl().key + "?ref_type=heads");
+    const repoUrl = apiUrlToWebUrl(apiSourceURL);
+    const webUrl = apiSourceURL.includes('github') ?
+      `${repoUrl}/blob/${branch}/${diagrammMoreMenuAnchorEl().key}` :
+      `${repoUrl}/-/blob/${branch}/${diagrammMoreMenuAnchorEl().key}`;
+    navigator.clipboard.writeText(webUrl);
     handleDiagramMoreMenuClose();
   };
 

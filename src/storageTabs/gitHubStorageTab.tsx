@@ -7,7 +7,7 @@ import type {
   UIAppState,
   SceneData,
 } from "@excalidraw/excalidraw/types/types";
-import { AlertColor, Backdrop, IconButton, TextField, CircularProgress, Menu, MenuItem, Popover, List, ListItem, ListItemButton, ListItemIcon, ListItemText } from "@mui/material";
+import { AlertColor, Backdrop, IconButton, TextField, CircularProgress, Menu, MenuItem, Popover, List, ListItem, ListItemButton, ListItemIcon, ListItemText, Stack } from "@mui/material";
 import SaveIcon from '@mui/icons-material/Save';
 import { RestoredDataState } from "@excalidraw/excalidraw/types/data/restore";
 import { DiagramEntry, diagramList } from "../storageTabs/storageTabUtils";
@@ -153,9 +153,10 @@ export function gitHubStorageTab(
         "(Read access to metadata;Read and Write access to code)"
       )}
 
-      <div style={{ width: '100%' }}>
-        <IconButton
-          onClick={() => {
+      <Stack spacing={2} sx={{ width: '100%' }}>
+        <Stack direction="row" spacing={1}>
+          <IconButton
+            onClick={() => {
             if (selectedBranch) {
               const commitParams: commitDiagramParams = {
                 sceneElements: getSceneElements ? getSceneElements() : [],
@@ -188,24 +189,24 @@ export function gitHubStorageTab(
           sx={{
             float: 'left'
           }}>
-          <SaveIcon />
-        </IconButton>
-        <TextField
-          value={docPath}
-          error={needPathValue ? needPathValue : false}
-          helperText={needPathValue ? "Empty diagram path" : ""}
-          sx={{ float: 'left', width: '90%' }}
-          label="Diagram path"
-          variant="outlined"
-          size="small"
-          onChange={(event) => {
-            docPathSet(event.target.value);
-            needPathValueSet && needPathValueSet(false);
-          }}
-        />
+            <SaveIcon />
+          </IconButton>
+          <TextField
+            value={docPath}
+            error={needPathValue ? needPathValue : false}
+            helperText={needPathValue ? "Empty diagram path" : ""}
+            sx={{ flexGrow: 1 }}
+            label="Diagram path"
+            variant="outlined"
+            size="small"
+            onChange={(event) => {
+              docPathSet(event.target.value);
+              needPathValueSet && needPathValueSet(false);
+            }}
+          />
+        </Stack>
         <TextField
           value={commitMessage}
-          sx={{ float: 'left', width: '100%' }}
           label="Commit message"
           variant="outlined"
           size="small"
@@ -232,10 +233,10 @@ export function gitHubStorageTab(
           docPath,
           docPathSet,
           deleteDiagram,
-          diagramActionMenu,
+          (anchorFn, closeFn) => diagramActionMenu(anchorFn, closeFn, stateApiSourceURL, selectedBranch),
           openAlertDelegate
         )}
-      </div>
+      </Stack>
       <Backdrop
         sx={(theme) => ({ color: '#fff', zIndex: theme.zIndex.drawer + 1 })}
         open={longOperationInProcess}

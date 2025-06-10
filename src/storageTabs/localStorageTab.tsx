@@ -7,7 +7,7 @@ import type {
   ExcalidrawImperativeAPI,
   SceneData,
 } from "@excalidraw/excalidraw/types/types";
-import { AlertColor, Autocomplete, Avatar, Chip, Divider, Drawer, IconButton, TextField, ToggleButton, ToggleButtonGroup, Tooltip, Typography } from "@mui/material";
+import { AlertColor, Autocomplete, Avatar, Chip, Divider, Drawer, IconButton, TextField, ToggleButton, ToggleButtonGroup, Tooltip, Typography, Stack } from "@mui/material";
 import { ExcalidrawElement, ExcalidrawLinearElement, NonDeletedExcalidrawElement } from "@excalidraw/excalidraw/types/element/types";
 import SaveIcon from '@mui/icons-material/Save';
 import { DiagramEntry, diagramList } from "./storageTabUtils";
@@ -105,28 +105,26 @@ export function localStorageTab(
 
 
   return <div style={{ width: '100%' }}>
-    <div style={{ width: '100%' }} >
-      <IconButton
-        onClick={() => saveDiagramLocal()}
-        sx={{
-          float: 'left'
-        }}>
-        <SaveIcon />
-      </IconButton>
-      <TextField
-        value={docPath}
-        error={needPathValue ? needPathValue : false}
-        helperText={needPathValue ? "Empty diagram path" : ""}
-        sx={{ float: 'left', width: '90%' }}
-        label="Diagram path"
-        variant="outlined"
-        size="small"
-        onChange={(event) => {
-          docPathSet(event.target.value);
-          needPathValueSet && needPathValueSet(false);
-        }}
-      />
-    </div>
+    <Stack spacing={2} sx={{ width: '100%' }}>
+      <Stack direction="row" spacing={1}>
+        <IconButton onClick={() => saveDiagramLocal()}>
+          <SaveIcon />
+        </IconButton>
+        <TextField
+          value={docPath}
+          error={needPathValue ? needPathValue : false}
+          helperText={needPathValue ? "Empty diagram path" : ""}
+          sx={{ flexGrow: 1 }}
+          label="Diagram path"
+          variant="outlined"
+          size="small"
+          onChange={(event) => {
+            docPathSet(event.target.value);
+            needPathValueSet && needPathValueSet(false);
+          }}
+        />
+      </Stack>
+    </Stack>
     <div style={{ width: '100%' }} >
       {diagramList(
         getSceneElements,
